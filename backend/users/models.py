@@ -10,6 +10,8 @@ from core.constants.users import (
     SEX_LENGTH
 )
 
+from core.validators import validate_phone_number
+
 
 class UserManager(BaseUserManager):
     """
@@ -131,7 +133,7 @@ class MyUser(AbstractUser):
         blank=True,
         unique=True,
         null=True,
-        # validators=
+        validators=[validate_phone_number],
         help_text="Введите номер телефона",
     )
     role = models.CharField(
