@@ -1,0 +1,59 @@
+[tool.poetry]
+name = "InTimeBioTech"
+version = "0.1.0"
+description = "InTimeBioTech."
+authors = ["DPavlen"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11.7"
+aiohttp = "3.9.3"
+django = "5.0.2"
+#Faker = "23.3.0"
+celery = { version = "5.3.6", extras = ["redis"] }
+django-cors-headers = "4.3.0"
+django-filter = "23.4"
+django-redis = "5.4.0"
+djangorestframework = "3.14.0"
+djoser = "2.2.0"
+drf-spectacular = { version = "0.26.5", extras = ["sidecar"] }
+gunicorn = "21.2.0"
+mypy = "1.8.0"
+Pillow = "10.2.0"
+pre-commit = "3.6.2"
+psycopg2-binary = "2.9.9"
+python-dotenv = "1.0.0"
+pytest-django = "==4.8.0"
+ruff = "0.2.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 88
+# Исключения длинных строк
+extend-exclude = [
+    "backend/backend/*.py",
+    "**/models.py",
+    "**/email_messages.py"
+]
+force-exclude = true
+# Линтер ruff
+[tool.ruff.lint]
+preview = true
+select = [
+    "E", # pycodestyle error
+    "W", # pycodestyle warning
+    "F", # pyflakes
+    "I", # isort
+    "N", # pep8-naming
+] # all rules here https://docs.astral.sh/ruff/rules/#pep8-naming-n
+fixable = ["F401", "E501"]
+ignore = ["E203", "I001"]
+
+[tool.ruff.lint.isort]
+lines-after-imports = -1
+
+[pytest.ini_options]
+pythonpath = ["."]
