@@ -1,14 +1,23 @@
 import os
 from pathlib import Path
 
+from django.core.management.utils import get_random_secret_key
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-z1y+c)atxa*bsmnb(bmc4^64!_yi#5i$0qlu7#cil0unt%i&j9"
+SECRET_KEY = os.getenv("SECRET_KEY", get_random_secret_key())
 
-DEBUG = True
+# DEBUG = True
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(" ")
+
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF", "*").split(" ")
+
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(" ")
 
 
 INSTALLED_APPS = [
@@ -66,6 +75,17 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": os.getenv("POSTGRES_DB", default="django"),
+#         "USER": os.getenv("POSTGRES_USER", default="django_user"),
+#         "PASSWORD": os.getenv("POSTGRES_PASSWORD", default="django"),
+#         "HOST": os.getenv("DB_HOST", default="backend-db"),
+#         "PORT": os.getenv("DB_PORT", default=5432),
+#     }
+# }
 
 
 AUTH_PASSWORD_VALIDATORS = [
