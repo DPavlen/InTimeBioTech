@@ -19,9 +19,6 @@ class CustomUserViewSet(UserViewSet):
     Permissions:
         - permission_classes: Список классов разрешений для ViewSet. Здесь
         установлен AllowAny для открытого доступа.
-    Methods:
-        - activate(self, request, uid, token, format=None): Активирует
-        пользователя с заданным UID и токеном.
     """
 
     queryset = MyUser.objects.all()

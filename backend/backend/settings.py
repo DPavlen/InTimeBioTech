@@ -87,6 +87,14 @@ DATABASES = {
 #     }
 # }
 
+# PASSWORD_HASHERS to list Argon2PasswordHasher first
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+    "django.contrib.auth.hashers.ScryptPasswordHasher",
+]
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -140,6 +148,9 @@ DJOSER = {
     "SERIALIZERS": {
         "user_create": "users.serializers.CustomUserSerializer",
         "user_delete": "users.serializers.CustomUserDeleteSerializer",
+        "user": "users.serializers.CustomUserSerializer",
+        "current_user": "users.serializers.CustomUserSerializer",
+        "token": "djoser.serializers.TokenSerializer",
     },
     "USE_CUSTOM_TOKEN_SERIALIZERS": True,
     "PERMISSIONS": {

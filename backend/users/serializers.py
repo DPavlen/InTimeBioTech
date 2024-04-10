@@ -38,8 +38,6 @@ class CustomUserSerializer(UserSerializer):
             last_name=validated_data["last_name"],
         )
 
-        if "telegram_id" in validated_data:
-            user.telegram = validated_data["telegram"]
         if "phone_number" in validated_data:
             user.phone_number = validated_data["phone_number"]
 
