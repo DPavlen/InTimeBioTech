@@ -1,7 +1,12 @@
+from random import random
+from datetime import timedelta
+
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 
+from backend import settings
 from core.constants.users import (
     EMAIL_LENGTH,
     NAME_LENGTH,
@@ -65,6 +70,47 @@ class UserManager(BaseUserManager):
             raise ValueError("Superuser must have is_superuser=True.")
 
         return self._create_user(email, password, **extra_fields)
+
+
+class VerificationOtpCodeManager(models.Manager):
+    """
+    Менеджер для управления OTP-кодами верификации.
+    Позволяет создавать новые OTP-коды,
+    проверять их валидность и управлять их сроком действия.
+    """
+
+    @staticmethod
+    def create_new_otp_code():
+        """
+        Создает новый OTP-код.
+        Returns:
+            int: Сгенерированный рандомный 6-ти значный OTP-код.
+        """
+
+        random.seed(timezone.now())
+        return random.randint(000000, 999999)
+
+    def otp_code_validation(self, email, otp_code):
+        """
+        Проверяет валидность OTP-кода для указанного адреса электронной почты.
+        Args:
+            email (str): Адрес электронной почты пользователя.
+            otp_code (int): Проверяемый OTP-код.
+        Returns:
+             bool: True, если OTP-код валиден и
+             не использован или не истек, в противном случае False.
+        """
+
+        otp_code = self.filter(
+            otp_code=otp_code,
+            email=email,
+            used=False,
+            expiration__gt=timezone.now() - timedelta(
+                minutes=settings.OTP_CODE_EXPIRATION_TIME))
+        if not otp_code:
+            return False
+        otp_code.update(used=True)
+        return True
 
 
 class MyUser(AbstractUser):
@@ -168,7 +214,39 @@ class MyUser(AbstractUser):
         return f"{self.first_name} {self.last_name} {self.email}"
 
 
+class VerificationCode(models.Model):
+    """
+    Модель для хранения информации о кодах верификации по электронной почте.
+    Attributes:
+        email (str): Адрес электронной почты пользователя.
+        otp_code (int): OTP-код верификации.
+        expiration (datetime): Время истечения срока действия кода верификации.
+        used (bool): Флаг указывает, использован ли код верификации.
+        objects (VerificationOtpCodeManager):
+            Менеджер для работы с объектами модели VerificationCode.
+    """
+
+    email = models.EmailField(
+        "Электронная почта",
+        max_length=EMAIL_LENGTH,
+        unique=True,
+        help_text="Введите адрес электронной почты",
+    )
+    otp_code = models.IntegerField()
+    expiration = models.DateTimeField()
+    used = models.BooleanField(default=False)
+
+    objects = VerificationOtpCodeManager()
+
+    class Meta:
+        verbose_name = "Код верификации"
+        verbose_name_plural = "Коды верификации"
+        unique_together = ['email', 'otp_code']
 
 
-
-
+    def __str__(self):
+        """
+        Возвращает строковое представление пользователя.
+        :return: Строковое представление в формате "email" и "otp_code".
+        """
+        return f"{self.email} {self.otp_code}"

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import MyUser
+from .models import MyUser, VerificationCode
 
 
 @admin.register(MyUser)
@@ -17,3 +17,19 @@ class MyUserAdmin(admin.ModelAdmin):
 
     list_display = ("id", "email", "last_name", "first_name", "phone_number")
     search_fields = ("email", "last_name", "first_name", "phone_number")
+
+
+@admin.register(VerificationCode)
+class VerificationCode(admin.ModelAdmin):
+    """
+    Класс администратора для модели class VerificationCode.
+    Параметры:
+        - list_display: Поля, которые будут отображаться в
+        списке пользователей.
+        - search_fields: Поля, по которым можно выполнять поиск пользователей.
+    Модель:
+        - VerificationCode.
+    """
+
+    list_display = ("id", "email", "otp_code", "expiration", "used")
+    search_fields = ("email", "otp_code", "expiration", "used")
