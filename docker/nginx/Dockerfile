@@ -11,7 +11,7 @@ RUN touch /var/run/nginx.pid && \
     chown -R nginx:nginx /var/run/nginx.pid && \
     chown -R nginx:nginx /var/cache/nginx
 
-COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY ./docker/nginx/configs/ /etc/nginx/conf.d/
+COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./configs/ /etc/nginx/conf.d/
 
 USER nginx

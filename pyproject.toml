@@ -6,7 +6,7 @@ authors = ["DPavlen"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "3.11.7"
+python = "^3.11.7"
 aiohttp = "3.9.3"
 django = {extras = ["argon2"], version = "^5.0.4"}
 #Faker = "23.3.0"

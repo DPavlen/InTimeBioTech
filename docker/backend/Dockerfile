@@ -21,6 +21,7 @@ RUN pip install --upgrade pip && \
     pip install --no-cache-dir poetry
 
 COPY pyproject.toml pyproject.toml
+
 RUN poetry install --no-root --only main
 
 COPY ./backend /$SRC_DIR
