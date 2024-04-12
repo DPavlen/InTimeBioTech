@@ -3,7 +3,7 @@ COMPANY_MARK = f"""
                Команда InTimeBioTech
                """
 
-def create_collect_confirmation_email(
+def create_confirmation_email(
     first_name, last_name, description,
 ):
     email_message = f"""

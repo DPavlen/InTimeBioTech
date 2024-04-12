@@ -1,4 +1,6 @@
 from random import random
+from random import randint
+import time
 from datetime import timedelta
 
 from django.contrib.auth.base_user import BaseUserManager
@@ -86,9 +88,7 @@ class VerificationOtpCodeManager(models.Manager):
         Returns:
             int: Сгенерированный рандомный 6-ти значный OTP-код.
         """
-
-        random.seed(timezone.now())
-        return random.randint(000000, 999999)
+        return randint(100000, 999999)
 
     def otp_code_validation(self, email, otp_code):
         """
@@ -111,6 +111,37 @@ class VerificationOtpCodeManager(models.Manager):
             return False
         otp_code.update(used=True)
         return True
+
+    def create_otp_code(self, email):
+        """
+        Создает новый OTP-код для указанного адреса электронной почты
+        и удаляет использованные или просроченные коды.
+        Parameters:
+            email (str): Адрес электронной почты пользователя.
+        Returns:
+            VerificationCode: Созданный объект кода верификации OTP.
+        """
+
+        self.filter(email=email, used=True).delete()
+        self.filter(email=email,
+                    expiration__lt=timezone.now() - timedelta(minutes=settings.OTP_CODE_EXPIRATION_TIME)).delete()
+        # timedelta(minutes=settings.OTP_CODE_EXPIRATION_TIME))
+        # 90 минут
+        valid_codes = self.filter(
+            email=email, used=False,
+            expiration__gt=timezone.now() - timedelta(minutes=settings.OTP_CODE_EXPIRATION_TIME))
+        if valid_codes:
+            # Если есть неиспользованный код, обновляем его срок действия
+            valid_code = valid_codes.first()
+            valid_codes.update(expiration=timezone.now() + timedelta(minutes=settings.OTP_CODE_EXPIRATION_TIME))
+            return valid_code
+        else:
+            # Если неиспользованный код не найден, создаем новый
+            otp_code = self.create_new_otp_code()
+            verification_code = self.create(
+                email=email, otp_code=otp_code,
+                expiration=timezone.now() + timedelta(minutes=settings.OTP_CODE_EXPIRATION_TIME))
+            return verification_code
 
 
 class MyUser(AbstractUser):
@@ -242,7 +273,6 @@ class VerificationCode(models.Model):
         verbose_name = "Код верификации"
         verbose_name_plural = "Коды верификации"
         unique_together = ['email', 'otp_code']
-
 
     def __str__(self):
         """
