@@ -13,12 +13,13 @@ def send_email_message(email, email_message):
     """
     Асинхронная задача отправки электронного сообщения.
     Отправляет электронное сообщение на указанный адрес.
-    :param email_message:
-    :param email: Адрес электронной почты получателя.
-    :param first_name: Имя пользователя.
-    :param last_name: Фамилия пользователя.
-    :param otp_code: OTP-код верификации.
+    Args:
+        email (str): Адрес электронной почты получателя.
+        email_message (str): Текст сообщения.
+    Raises:
+        Exception: Если произошла ошибка при отправке письма.
     """
+
     try:
         subject = "InTimeBioTech: OTP ."
         send_from = DEFAULT_FROM_EMAIL

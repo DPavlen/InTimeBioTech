@@ -239,7 +239,7 @@ class MyUser(AbstractUser):
         Возвращает строковое представление пользователя.
         :return: Строковое представление в формате "Имя Фамилия @".
         """
-        return f"{self.first_name} {self.last_name} {self.email}"
+        return f"{self.first_name} {self.last_name} "
 
 
 class VerificationCode(models.Model):
@@ -276,4 +276,4 @@ class VerificationCode(models.Model):
         Возвращает строковое представление пользователя.
         :return: Строковое представление в формате "email" и "otp_code".
         """
-        return f"{self.email} {self.otp_code}"
+        return f"{self.otp_code}"

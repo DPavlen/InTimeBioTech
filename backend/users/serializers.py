@@ -4,6 +4,7 @@ from djoser.serializers import UserSerializer
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 
+from core.email_messages import create_confirmation_email
 from users.models import MyUser, VerificationCode
 from api.v1.task import send_email_message
 
@@ -105,16 +106,31 @@ class VerificationCodeSerializer(ModelSerializer):
 
     def create(self, validated_data):
         """
-        Создает новый OTP-код для верификации.
+        Создает новый OTP-код для верификации, отправляет его по электронной почте
+        и возвращает OTP-код верификации.
         Args: validated_data (dict): Валидированные данные.
         Returns:
             VerificationCode: Созданный объект OTP-кода верификации.
+        Raises:
+        TypeError: Если электронная почта отсутствует в валидированных данных.
         """
 
         email = validated_data['email']
         otp_code = VerificationCode.objects.create_otp_code(email)
-        otp_code.save()
-        # send_email_message.delay(otp_code.email, otp_code.otp_code)
+
+        user = MyUser.objects.filter(email=email).first()
+        if user is not None:
+            first_name = user.first_name
+            last_name = user.last_name
+            email_message = create_confirmation_email(
+                first_name, last_name, otp_code
+            )
+        else:
+            email_message = create_confirmation_email(
+                otp_code, first_name='', last_name=''
+            )
+        send_email_message.delay(email=email, email_message=email_message)
+
         return otp_code
 
 
