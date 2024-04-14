@@ -1,3 +1,5 @@
+from typing import Dict
+
 from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
 from rest_framework.serializers import ModelSerializer
@@ -29,7 +31,7 @@ class VerificationCodeSerializer(ModelSerializer):
         fields = '__all__'
         read_only_fields = ('otp_code', 'expiration', 'used')
 
-    def validate(self, data):
+    def validate(self, data: Dict) -> Dict:
         """
         Проверяет валидность данных, включая электронную почту и ее наличие в базе данных.
         Args: data (dict): Словарь с данными для валидации.
@@ -50,7 +52,7 @@ class VerificationCodeSerializer(ModelSerializer):
 
         return data
 
-    def create(self, validated_data):
+    def create(self, validated_data: Dict) -> VerificationCode:
         """
         Создает новый OTP-код для верификации.
         Args: validated_data (dict): Валидированные данные.

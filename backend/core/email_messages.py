@@ -3,20 +3,12 @@ COMPANY_MARK = f"""
                Команда InTimeBioTech
                """
 
-def create_confirmation_email(
-    first_name, last_name, description,
-):
+def create_confirmation_email(first_name, last_name, otp_code):
+    """."""
     email_message = f"""
-                    Привет, {first_name} {last_name}!
-                    Вход: {description}
+                    Привет, {first_name} {last_name} !
+                    OTP-код: {otp_code}!
                     {COMPANY_MARK}
                     """
     return email_message
 
-
-def create_confirmation_email(first_name, last_name):
-    email_message = f"""
-                    Привет, {first_name} {last_name}!
-                    {COMPANY_MARK}
-                    """
-    return email_message

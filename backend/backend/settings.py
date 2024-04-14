@@ -15,9 +15,9 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(" ")
 
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF", "*").split(" ")
-
-CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(" ")
+# CSRF_TRUSTED_ORIGINS = os.getenv("CSRF", "*").split(" ")
+#
+# CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(" ")
 
 
 INSTALLED_APPS = [
@@ -69,23 +69,23 @@ TEMPLATES = [
 WSGI_APPLICATION = "backend.wsgi.application"
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
 # DATABASES = {
 #     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": os.getenv("POSTGRES_DB", default="django"),
-#         "USER": os.getenv("POSTGRES_USER", default="django_user"),
-#         "PASSWORD": os.getenv("POSTGRES_PASSWORD", default="django"),
-#         "HOST": os.getenv("DB_HOST"),
-#         "PORT": os.getenv("DB_PORT", default=5432),
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB", default="django"),
+        "USER": os.getenv("POSTGRES_USER", default="django_user"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD", default="django"),
+        "HOST": os.getenv("DB_HOST", default="intime-biotech-backend-db"),
+        "PORT": os.getenv("DB_PORT", default="5432"),
+    }
+}
 
 # PASSWORD_HASHERS to list Argon2PasswordHasher first
 PASSWORD_HASHERS = [
@@ -178,8 +178,8 @@ SPECTACULAR_SETTINGS = {
 
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = os.getenv("EMAIL_PORT")
-EMAIL_USE_TLS = bool(os.getenv("EMAIL_USE_TLS", "False"))
-EMAIL_USE_SSL = bool(os.getenv("EMAIL_USE_SSL", "True"))
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "False") == "True"
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "False") == "True"
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")

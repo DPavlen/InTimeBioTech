@@ -1,6 +1,4 @@
-from random import random
 from random import randint
-import time
 from datetime import timedelta
 
 from django.contrib.auth.base_user import BaseUserManager
@@ -125,7 +123,6 @@ class VerificationOtpCodeManager(models.Manager):
         self.filter(email=email, used=True).delete()
         self.filter(email=email,
                     expiration__lt=timezone.now() - timedelta(minutes=settings.OTP_CODE_EXPIRATION_TIME)).delete()
-        # timedelta(minutes=settings.OTP_CODE_EXPIRATION_TIME))
         # 90 минут
         valid_codes = self.filter(
             email=email, used=False,

@@ -26,16 +26,15 @@ class CustomUserSerializer(UserSerializer):
             "last_name",
             "surname",
             "sex",
-            "phone_number",
             "password",
         )
         extra_kwargs = {
+            "email": {"required": True},
             "password": {"write_only": True},
             "first_name": {"required": False},
             "last_name": {"required": False},
             "surname": {"required": False},
-            "sex": {"required": True},
-            "phone_number": {"required": False},
+            "sex": {"required": False},
             "is_active": {"required": False, "read_only": True},
         }
 
@@ -113,10 +112,10 @@ class VerificationCodeSerializer(ModelSerializer):
         """
 
         email = validated_data['email']
-        user_otp = VerificationCode.objects.create_otp_code(email)
-        # user_otp = VerificationCode.objects.create_otp_code(**validated_data)
-        send_email_message.delay(user_otp.email, user_otp.otp_code)
-        return user_otp
+        otp_code = VerificationCode.objects.create_otp_code(email)
+        otp_code.save()
+        # send_email_message.delay(otp_code.email, otp_code.otp_code)
+        return otp_code
 
 
 class AuthOTPCodeSerializer(serializers.Serializer):
@@ -133,5 +132,5 @@ class AuthOTPCodeSerializer(serializers.Serializer):
 
     class Meta:
         model = VerificationCode
-        fields = '__all__'
-        read_only_fields = ('otp_code', 'expiration', 'used')
+        fields = ('otp_code', 'expiration', 'used')
+        read_only_fields = ('expiration', 'used')
