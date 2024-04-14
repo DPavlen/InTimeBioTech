@@ -15,8 +15,8 @@ class MyUserAdmin(admin.ModelAdmin):
         - MyUser.
     """
 
-    list_display = ("id", "email", "last_name", "first_name", "phone_number")
-    search_fields = ("email", "last_name", "first_name", "phone_number")
+    list_display = ("id", "email", "last_name", "first_name", "role")
+    search_fields = ("email", "last_name", "first_name", "role")
 
 
 @admin.register(VerificationCode)

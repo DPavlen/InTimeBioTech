@@ -82,7 +82,7 @@ DATABASES = {
 #         "NAME": os.getenv("POSTGRES_DB", default="django"),
 #         "USER": os.getenv("POSTGRES_USER", default="django_user"),
 #         "PASSWORD": os.getenv("POSTGRES_PASSWORD", default="django"),
-#         "HOST": os.getenv("DB_HOST", default="backend-db"),
+#         "HOST": os.getenv("DB_HOST"),
 #         "PORT": os.getenv("DB_PORT", default=5432),
 #     }
 # }
@@ -147,7 +147,7 @@ DJOSER = {
     "LOGIN_FIELD": "email",
     "SERIALIZERS": {
         "user_create": "users.serializers.CustomUserSerializer",
-        "user_delete": "users.serializers.CustomUserDeleteSerializer",
+        "user_delete": "users.serializers.CustomUserSerializer",
         "user": "users.serializers.CustomUserSerializer",
         "current_user": "users.serializers.CustomUserSerializer",
         "token": "djoser.serializers.TokenSerializer",

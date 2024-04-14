@@ -31,6 +31,10 @@ class CustomUserSerializer(UserSerializer):
         )
         extra_kwargs = {
             "password": {"write_only": True},
+            "first_name": {"required": False},
+            "last_name": {"required": False},
+            "surname": {"required": False},
+            "sex": {"required": True},
             "phone_number": {"required": False},
             "is_active": {"required": False, "read_only": True},
         }
@@ -41,10 +45,6 @@ class CustomUserSerializer(UserSerializer):
             first_name=validated_data["first_name"],
             last_name=validated_data["last_name"],
         )
-
-        # if "phone_number" in validated_data:
-        #     user.phone_number = validated_data["phone_number"]
-
         user.set_password(validated_data["password"])
         user.save()
         return user

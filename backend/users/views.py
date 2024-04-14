@@ -1,6 +1,7 @@
 from typing import Tuple
 
 from django.core.exceptions import ObjectDoesNotExist
+from drf_spectacular.utils import extend_schema_view, extend_schema
 from rest_framework.authtoken.models import Token
 from djoser.views import UserViewSet
 from rest_framework import status
@@ -9,9 +10,11 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser, AllowAny
 
 from users.models import MyUser, VerificationCode
+from users.schemas import COLLECT_SCHEMA
 from users.serializers import CustomUserSerializer, VerificationCodeSerializer, AuthOTPCodeSerializer
 
 
+@extend_schema_view(**COLLECT_SCHEMA)
 class CustomUserViewSet(UserViewSet):
     """
     Кастомный ViewSet для работы с пользователями.
@@ -40,7 +43,13 @@ class CustomUserViewSet(UserViewSet):
     @action(detail=False, methods=['post'])
     def verification_code(self, request):
         """
-        Верификация пользователя.
+        Создает и сохраняет новый объект кода верификации.
+        Parameters: request (Request):
+            Запрос, содержащий данные для создания кода верификации.
+        Returns: Response:
+            Ответ с данными созданного кода верификации и статусом HTTP 201 CREATED.
+        Raises:
+            ValidationError: Если данные для создания кода верификации некорректны.
         """
         serializer = VerificationCodeSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

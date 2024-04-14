@@ -7,7 +7,6 @@ services:
       context: ../
       dockerfile: docker/backend/Dockerfile
       target: main
-    #command: gunicorn --bind 0.0.0.0:${BACKEND_PORT:-8000} backend.wsgi:application
     volumes:
       - ../backend:/app
       - static:/app/static/
@@ -21,11 +20,17 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     ports:
-      - ${FRONTEND_PORT:-80}:80
+      - "8080:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:rw
       - ./nginx/configs:/etc/nginx/conf.d:rw
       - static:/app/static:ro
+    depends_on:
+      - intime-biotech-backend-api
+    networks:
+      - intime-biotech-backend-network
+    links:
+      - intime-biotech-backend-api
 
   intime-biotech-backend-db:
     image: postgres:14
