@@ -1,5 +1,4 @@
 # InTimeBioTech
-InTimeBioTech
 
 ## 1. [Задание и требования](#1)
 ## 2. [Функционал API, эндпойнты и технические особенности](#2)
@@ -48,6 +47,8 @@ InTimeBioTech
 - http://localhost/api/v1/auth/token/login/ Djoser эндпойнт.POST-запрос. Вход по логину и паролю и получение токена.
 - http://localhost/api/v1/auth/token/login/ Djoser эндпойнт.POST-запрос. Выход и удаление токена.
 
+Пример функционала
+[text](<../../Projects/InTimeBioTech/Отчет о тестировании/Функционал проекта.odt>)
 
 ## 3. Стек технологий <a id=3></a>
 [![Django](https://img.shields.io/badge/Django-4.2.1-6495ED)](https://www.djangoproject.com) [![Djangorestframework](https://img.shields.io/badge/djangorestframework-3.14.0-6495ED)](https://www.django-rest-framework.org/) [![Django Authentication with Djoser](https://img.shields.io/badge/Django_Authentication_with_Djoser-2.2.0-6495ED)](https://djoser.readthedocs.io/en/latest/getting_started.html) [![Nginx](https://img.shields.io/badge/Nginx-1.21.3-green)](https://nginx.org/ru/)  [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)](https://www.postgresql.org/) [![Celery](https://img.shields.io/badge/Celery-%205.2.7-blue?style=flat-square&logo=celery)](https://docs.celeryq.dev/en/stable/)[![Redis](https://img.shields.io/badge/Redis-%205.0.0-blue?style=flat-square&logo=redis)](https://redis.io/) [![Swagger](https://img.shields.io/badge/Swagger-%201.21.7-blue?style=flat-square&logo=swagger)](https://swagger.io/) [![Gunicorn](https://img.shields.io/badge/Gunicorn-%2020.0.4-blue?style=flat-square&logo=gunicorn)](https://gunicorn.org/) [![Docker](https://img.shields.io/badge/Docker-%2024.0.5-blue?style=flat-square&logo=docker)](https://www.docker.com/) [![DockerCompose](https://img.shields.io/badge/Docker_Compose-%202.21.0-blue?style=flat-square&logo=docsdotrs)](https://docs.docker.com/compose/)
